@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,17 @@ namespace DAL.Models
 {
     public class ToDoList
     {
-        public List<int> ToDoTasksIds { get; set; }
+        public int Id { get; set; }
+
+        [Required]
+        [MaxLength(150)]
+        public string Title { get; set; }
+
+        [Required]
+        [MaxLength(500)]
+        public string Description { get; set; }
+
+        public int UserId { get; set; }
 
         public DateTime AddedOn { get; set; }
 
