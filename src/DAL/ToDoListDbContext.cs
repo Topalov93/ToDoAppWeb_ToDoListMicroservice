@@ -22,6 +22,8 @@ namespace DAL
 
         public DbSet<ToDoList> ToDoLists { get; set; }
 
+        public DbSet<ToDoListToDoTasks> ToDoListToDoTasks;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

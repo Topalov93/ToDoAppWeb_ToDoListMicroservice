@@ -24,5 +24,7 @@ namespace DAL.Models
         public DateTime AddedOn { get; set; }
 
         public DateTime EditedOn { get; set; }
+
+        List<ToDoListToDoTasks> Tasks { get; set; }
     }
 }
