@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    class ToDoListRepository
+    public class ToDoListRepository : IToDoListRepository
     {
     }
 }

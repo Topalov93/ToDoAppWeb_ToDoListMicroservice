@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repositories
+namespace DAL.Models
 {
-    public interface IToDoListRepository
+    public class ToDoTask
     {
     }
 }
