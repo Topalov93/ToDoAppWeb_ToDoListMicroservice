@@ -38,7 +38,7 @@ namespace ToDoAppWeb_ToDoListMicroservice
             });
 
             //EFCore
-            services.AddDbContext<ToDoListDbContext>(options => options.UseSqlServer("Data Source = .;Initial Catalog = ToDoAppDbWeb_ToDoTaskMicroservice;Integrated Security = True;TrustServerCertificate = False;"), ServiceLifetime.Singleton);
+            services.AddDbContext<ToDoListDbContext>(options => options.UseSqlServer("Data Source = .;Initial Catalog = ToDoAppDbWeb_ToDoListMicroservice;Integrated Security = True;TrustServerCertificate = False;"), ServiceLifetime.Singleton);
 
             services.AddTransient<IToDoListRepository, ToDoListRepository>();
 
