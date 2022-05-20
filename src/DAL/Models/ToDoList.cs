@@ -25,6 +25,6 @@ namespace DAL.Models
 
         public DateTime EditedOn { get; set; }
 
-        List<ToDoTask> Tasks { get; set; }
+        public virtual ICollection <ToDoTask> ToDoTasks { get; set; }
     }
 }

@@ -30,6 +30,13 @@ namespace DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
+
+    //            modelBuilder.Entity<Grade>()
+    //.HasMany<Student>(g => g.Students)
+    //.WithRequired(s => s.CurrentGrade)
+    //.HasForeignKey<int>(s => s.CurrentGradeId);
+
             modelBuilder.Entity<ToDoList>()
                 .Property(t => t.AddedOn)
                 .HasDefaultValueSql("GETUTCDATE()");

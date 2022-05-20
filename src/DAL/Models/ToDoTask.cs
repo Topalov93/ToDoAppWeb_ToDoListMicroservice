@@ -18,6 +18,8 @@ namespace DAL.Models
         [Required]
         public bool IsCompleted { get; set; }
 
-        public ToDoList ToDoList { get; set; }
+        public int ToDoListId { get; set; }
+
+        public virtual ToDoList ToDoList { get; set; }
     }
 }
