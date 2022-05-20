@@ -44,5 +44,22 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
                 return BadRequest(resultState.Message);
             }
         }
+
+        [HttpDelete]
+        [Route("{toDoListId}")]
+        public async Task<ActionResult> Delete(int toDoListId)
+        {
+            var resultState = await _toDoListService.DeleteTask(toDoListId);
+
+            if (resultState.IsSuccessful)
+            {
+
+                return Ok(resultState.Message);
+            }
+            else
+            {
+                return BadRequest(resultState.Message);
+            }
+        }
     }
 }

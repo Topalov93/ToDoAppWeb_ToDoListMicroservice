@@ -10,5 +10,7 @@ namespace DAL.Repositories
     public interface IToDoListRepository
     {
         public Task CreateToDoList(ToDoList newToDoList);
+
+        public Task<ToDoList> GetToDoListByTitle(string title);
     }
 }

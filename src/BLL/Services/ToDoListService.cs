@@ -39,5 +39,10 @@ namespace BLL.Services
             //    return new ResultState(false, Messages.UnableToCreateToDoTask, ex);
             //}
         }
+
+        public async Task<ToDoList> GetToDoListByTitle(string title)
+        {
+            return await _toDoListRepository.GetToDoListByTitle(title);
+        }
     }
 }
