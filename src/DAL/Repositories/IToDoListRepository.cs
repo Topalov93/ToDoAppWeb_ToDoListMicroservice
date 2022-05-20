@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace DAL.Repositories
 {
     public interface IToDoListRepository
     {
+        public Task CreateToDoList(ToDoList newToDoList);
     }
 }

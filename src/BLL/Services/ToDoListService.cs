@@ -18,8 +18,8 @@ namespace BLL.Services
             _toDoListRepository = toDoListRepository;
         }
 
-        //public async Task<ResultState> CreateTask(ToDoList newToDoTask)
-        //{
+        public async Task<ResultState> CreateToDoList(ToDoList newToDoList)
+        {
             //ToDoList toDoList = await _toDoListRepository.GetToDoTaskByTitle(newToDoTask.Title);
 
             //if (toDoTask is not null)
@@ -31,13 +31,13 @@ namespace BLL.Services
 
             //try
             //{
-            //    await _toDoTaskRepository.CreateToDoTask(newToDoTask);
-            //    return new ResultState(true, Messages.ToDoTaskCreationSuccessfull);
+            await _toDoListRepository.CreateToDoList(newToDoList);
+            return new ResultState(true, "Successful");
             //}
             //catch (Exception ex)
             //{
             //    return new ResultState(false, Messages.UnableToCreateToDoTask, ex);
             //}
-        //}
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class ToDoList
+    public class ToDoTask
     {
         public int Id { get; set; }
 
@@ -16,15 +16,8 @@ namespace DAL.Models
         public string Title { get; set; }
 
         [Required]
-        [MaxLength(500)]
-        public string Description { get; set; }
+        public bool IsCompleted { get; set; }
 
-        public int UserId { get; set; }
-
-        public DateTime AddedOn { get; set; }
-
-        public DateTime EditedOn { get; set; }
-
-        List<ToDoTask> Tasks { get; set; }
+        public ToDoList ToDoList { get; set; }
     }
 }

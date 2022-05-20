@@ -32,7 +32,7 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
                 UserId = toDoTask.UserId,
             };
 
-            var resultState = await _toDoListService.CreateTask(toDoTaskToAdd);
+            var resultState = await _toDoListService.CreateToDoList(toDoListToAdd);
 
             if (resultState.IsSuccessful)
             {

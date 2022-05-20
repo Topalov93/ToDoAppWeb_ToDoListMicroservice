@@ -21,7 +21,5 @@ namespace DAL.Repositories
             await _context.ToDoLists.Add(newToDoList).ReloadAsync();
             _context.SaveChanges();
         }
-
-
     }
 }
