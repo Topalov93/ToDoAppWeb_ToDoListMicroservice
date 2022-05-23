@@ -12,5 +12,6 @@ namespace DAL.Repositories
         public Task CreateToDoList(ToDoList newToDoList);
 
         public Task<ToDoList> GetToDoListByTitle(string title);
+        Task<ToDoList> GetToDoListById(int id);
     }
 }

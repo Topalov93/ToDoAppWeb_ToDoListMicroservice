@@ -44,5 +44,30 @@ namespace BLL.Services
         {
             return await _toDoListRepository.GetToDoListByTitle(title);
         }
+
+        public async Task<ToDoList> GetToDoListById(int id)
+        {
+            return await _toDoListRepository.GetToDoListById(id);
+        }
+
+        public async Task<ResultState> DeleteToDoList(int taskId)
+        {
+            ToDoTask toDoTask = await _toDoTaskRepository.GetToDoTaskById(taskId);
+
+            if (toDoTask is null)
+            {
+                return new ResultState(false, Messages.ToDoTaskDoesntExist);
+            }
+
+            try
+            {
+                await _toDoTaskRepository.DeleteToDoTask(taskId);
+                return new ResultState(true, Messages.ToDoTaskDeletedSuccessfull);
+            }
+            catch (Exception ex)
+            {
+                return new ResultState(false, Messages.UnableToDeleteToDoTask, ex);
+            }
+        }
     }
 }
