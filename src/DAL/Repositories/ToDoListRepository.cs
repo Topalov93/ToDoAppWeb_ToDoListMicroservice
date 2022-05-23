@@ -44,6 +44,15 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
+        public async Task AddToDoTask(ToDoTask toDoTask, int toDoListId)
+        {
+            ToDoList toDoList = await GetToDoListById(toDoListId);
+
+            toDoList.ToDoTasks.Add(toDoTask);
+
+            _context.SaveChanges();
+        }
+
         public async Task<ToDoList> GetToDoListByTitle(string title)
         {
             return await _context.ToDoLists.FirstOrDefaultAsync(t => t.Title == title);

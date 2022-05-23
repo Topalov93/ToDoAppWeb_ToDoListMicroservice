@@ -1,9 +1,6 @@
 ﻿using Common;
 using DAL.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BLL.Services
@@ -11,5 +8,24 @@ namespace BLL.Services
     public interface IToDoListService
     {
         public Task<ResultState> CreateToDoList(ToDoList newToDoList);
+
+
+        public Task<ResultState> EditToDoList(int toDoListId, ToDoList newToDoList);
+
+
+        public Task<ResultState> DeleteToDoList(int toDoListId);
+
+
+        public Task<ResultState> AddToDoTask(ToDoTask toDoTask, int toDoListId);
+
+
+        public Task<List<ToDoTask>> GetToDoListToDoTasks(int toDoListId);
+
+
+        public Task<ToDoList> GetToDoListByTitle(string title);
+
+
+        public Task<ToDoList> GetToDoListById(int id);
+
     }
 }

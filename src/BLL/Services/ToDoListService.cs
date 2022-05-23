@@ -20,24 +20,89 @@ namespace BLL.Services
 
         public async Task<ResultState> CreateToDoList(ToDoList newToDoList)
         {
-            //ToDoList toDoList = await _toDoListRepository.GetToDoTaskByTitle(newToDoTask.Title);
+            ToDoList toDoList = await _toDoListRepository.GetToDoListByTitle(newToDoList.Title);
 
-            //if (toDoTask is not null)
-            //{
-            //    return new ResultState(false, Messages.ToDoTaskAlreadyExist);
-            //}
+            if (toDoList is not null)
+            {
+                return new ResultState(false, "ToDoList already exist");
+            }
 
-            //newToDoTask.IsCompleted = false;
+            try
+            {
+                await _toDoListRepository.CreateToDoList(newToDoList);
+                return new ResultState(true, "Successful");
+            }
+            catch (Exception ex)
+            {
+                return new ResultState(false, "Unable to create ToDoList", ex);
+            }
+        }
 
-            //try
-            //{
-            await _toDoListRepository.CreateToDoList(newToDoList);
-            return new ResultState(true, "Successful");
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new ResultState(false, Messages.UnableToCreateToDoTask, ex);
-            //}
+        public async Task<ResultState> EditToDoList(int toDoListId, ToDoList newToDoList)
+        {
+            ToDoList toDoList = await _toDoListRepository.GetToDoListById(toDoListId);
+
+            if (toDoList is null)
+            {
+                return new ResultState(false, "ToDoList don't exist");
+            }
+
+            newToDoList.EditedOn = DateTime.UtcNow;
+
+            try
+            {
+                await _toDoListRepository.EditToDoList(toDoListId, newToDoList);
+                return new ResultState(true, "Successful");
+            }
+            catch (Exception ex)
+            {
+                return new ResultState(false, "Unable to edit ToDoList", ex);
+            }
+        }
+
+        public async Task<ResultState> DeleteToDoList(int toDoListId)
+        {
+            ToDoList toDoList = await _toDoListRepository.GetToDoListById(toDoListId);
+
+            if (toDoList is null)
+            {
+                return new ResultState(false, "ToDoList don't exist");
+            }
+
+            try
+            {
+                await _toDoListRepository.DeleteToDoList(toDoListId);
+                return new ResultState(true, "Successful");
+            }
+            catch (Exception ex)
+            {
+                return new ResultState(false, "Unable to delete ToDoList", ex);
+            }
+        }
+
+        public async Task<ResultState> AddToDoTask(ToDoTask toDoTask, int toDoListId)
+        {
+            ToDoList toDoList = await _toDoListRepository.GetToDoListById(toDoListId);
+
+            if (toDoList is null)
+            {
+                return new ResultState(false, "ToDoList don't exist");
+            }
+
+            try
+            {
+                await _toDoListRepository.AddToDoTask(toDoTask, toDoListId);
+                return new ResultState(true, "Successful");
+            }
+            catch (Exception ex)
+            {
+                return new ResultState(false, "Unable to add task to ToDoList", ex);
+            }
+        }
+
+        public async Task<List<ToDoTask>> GetToDoListToDoTasks(int toDoListId)
+        {
+            return await _toDoListRepository.GetToDoListToDoTasks(toDoListId);
         }
 
         public async Task<ToDoList> GetToDoListByTitle(string title)
@@ -49,25 +114,6 @@ namespace BLL.Services
         {
             return await _toDoListRepository.GetToDoListById(id);
         }
-
-        public async Task<ResultState> DeleteToDoList(int taskId)
-        {
-            ToDoTask toDoTask = await _toDoTaskRepository.GetToDoTaskById(taskId);
-
-            if (toDoTask is null)
-            {
-                return new ResultState(false, Messages.ToDoTaskDoesntExist);
-            }
-
-            try
-            {
-                await _toDoTaskRepository.DeleteToDoTask(taskId);
-                return new ResultState(true, Messages.ToDoTaskDeletedSuccessfull);
-            }
-            catch (Exception ex)
-            {
-                return new ResultState(false, Messages.UnableToDeleteToDoTask, ex);
-            }
-        }
     }
+
 }

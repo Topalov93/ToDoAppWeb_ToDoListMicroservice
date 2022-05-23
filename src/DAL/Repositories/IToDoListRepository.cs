@@ -1,8 +1,5 @@
 ﻿using DAL.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories
@@ -11,7 +8,16 @@ namespace DAL.Repositories
     {
         public Task CreateToDoList(ToDoList newToDoList);
 
+        public Task EditToDoList(int toDoListId, ToDoList newToDoList);
+
+        public Task DeleteToDoList(int toDoListId);
+
+        public Task AddToDoTask(ToDoTask toDoTask, int toDoListId);
+
         public Task<ToDoList> GetToDoListByTitle(string title);
-        Task<ToDoList> GetToDoListById(int id);
+
+        public Task<ToDoList> GetToDoListById(int id);
+
+        public Task<List<ToDoTask>> GetToDoListToDoTasks(int toDoListId);
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models.RequestDTO
 {
-    public class ToDoListCreateRequestDTO
+    public class ToDoListRequestDTO
     {
 
         [Required]
