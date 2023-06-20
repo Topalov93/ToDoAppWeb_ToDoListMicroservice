@@ -9,7 +9,7 @@ namespace DAL.Models
 {
     public class ToDoList
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [MaxLength(150)]

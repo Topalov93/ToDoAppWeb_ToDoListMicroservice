@@ -10,22 +10,22 @@ namespace BLL.Services
         public Task<ResultState> CreateToDoList(ToDoList newToDoList);
 
 
-        public Task<ResultState> EditToDoList(int toDoListId, ToDoList newToDoList);
+        public Task<ResultState> EditToDoList(string toDoListId, ToDoList newToDoList);
 
 
-        public Task<ResultState> DeleteToDoList(int toDoListId);
+        public Task<ResultState> DeleteToDoList(string toDoListId);
 
 
-        public Task<ResultState> AddToDoTask(ToDoTask toDoTask, int toDoListId);
+        public Task<ResultState> AddToDoTask(ToDoTask toDoTask, string toDoListId);
 
 
-        public Task<List<ToDoTask>> GetToDoListToDoTasks(int toDoListId);
+        //public Task<List<ToDoTask>> GetToDoListToDoTasks(string toDoListId);
 
 
-        public Task<ToDoList> GetToDoListByTitle(string title);
+        //public Task<ToDoList> GetToDoListByTitle(string title);
 
 
-        public Task<ToDoList> GetToDoListById(int id);
+        public Task<ToDoList> GetToDoListById(string id);
 
     }
 }

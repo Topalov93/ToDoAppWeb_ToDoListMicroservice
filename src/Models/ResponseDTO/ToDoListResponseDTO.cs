@@ -9,7 +9,7 @@ namespace Models.ResponseDTO
 {
     public class ToDoListResponseDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [MaxLength(150)]

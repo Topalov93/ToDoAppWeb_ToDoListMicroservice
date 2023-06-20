@@ -1,5 +1,6 @@
 using BLL.Services;
 using DAL;
+using DAL.Models;
 using DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,8 +38,7 @@ namespace ToDoAppWeb_ToDoListMicroservice
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoAppWeb_ToDoListMicroservice", Version = "v1" });
             });
 
-            //EFCore
-            services.AddDbContext<ToDoListDbContext>(options => options.UseSqlServer("Data Source = .;Initial Catalog = ToDoAppDbWeb_ToDoListMicroservice;Integrated Security = True;TrustServerCertificate = False;"), ServiceLifetime.Singleton);
+            services.Configure<ToDoListServiceDatabaseSettings>(Configuration.GetSection("ToDoListServiceDatabase"));
 
             services.AddTransient<IToDoListRepository, ToDoListRepository>();
 
@@ -65,13 +65,6 @@ namespace ToDoAppWeb_ToDoListMicroservice
             {
                 endpoints.MapControllers();
             });
-
-            var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            using (var serviceScope = serviceScopeFactory.CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetService<ToDoListDbContext>();
-                dbContext.Database.EnsureCreated();
-            }
         }
     }
 }

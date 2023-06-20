@@ -20,16 +20,16 @@ namespace BLL.Services
 
         public async Task<ResultState> CreateToDoList(ToDoList newToDoList)
         {
-            ToDoList toDoList = await _toDoListRepository.GetToDoListByTitle(newToDoList.Title);
+            //ToDoList toDoList = await _toDoListRepository.GetToDoListByTitle(newToDoList.Title);
 
-            if (toDoList is not null)
-            {
-                return new ResultState(false, "ToDoList already exist");
-            }
+            //if (toDoList is not null)
+            //{
+            //    return new ResultState(false, "ToDoList already exist");
+            //}
 
             try
             {
-                await _toDoListRepository.CreateToDoList(newToDoList);
+                await _toDoListRepository.CreateAsync(newToDoList);
                 return new ResultState(true, "Successful");
             }
             catch (Exception ex)
@@ -38,9 +38,9 @@ namespace BLL.Services
             }
         }
 
-        public async Task<ResultState> EditToDoList(int toDoListId, ToDoList newToDoList)
+        public async Task<ResultState> EditToDoList(string toDoListId, ToDoList newToDoList)
         {
-            ToDoList toDoList = await _toDoListRepository.GetToDoListById(toDoListId);
+            ToDoList toDoList = await _toDoListRepository.GetAsync(toDoListId);
 
             if (toDoList is null)
             {
@@ -51,7 +51,7 @@ namespace BLL.Services
 
             try
             {
-                await _toDoListRepository.EditToDoList(toDoListId, newToDoList);
+                await _toDoListRepository.UpdateAsync(toDoListId, newToDoList);
                 return new ResultState(true, "Successful");
             }
             catch (Exception ex)
@@ -60,9 +60,9 @@ namespace BLL.Services
             }
         }
 
-        public async Task<ResultState> DeleteToDoList(int toDoListId)
+        public async Task<ResultState> DeleteToDoList(string toDoListId)
         {
-            ToDoList toDoList = await _toDoListRepository.GetToDoListById(toDoListId);
+            ToDoList toDoList = await _toDoListRepository.GetAsync(toDoListId);
 
             if (toDoList is null)
             {
@@ -71,7 +71,7 @@ namespace BLL.Services
 
             try
             {
-                await _toDoListRepository.DeleteToDoList(toDoListId);
+                await _toDoListRepository.RemoveAsync(toDoListId);
                 return new ResultState(true, "Successful");
             }
             catch (Exception ex)
@@ -80,9 +80,9 @@ namespace BLL.Services
             }
         }
 
-        public async Task<ResultState> AddToDoTask(ToDoTask toDoTask, int toDoListId)
+        public async Task<ResultState> AddToDoTask(ToDoTask toDoTask, string toDoListId)
         {
-            ToDoList toDoList = await _toDoListRepository.GetToDoListById(toDoListId);
+            ToDoList toDoList = await _toDoListRepository.GetAsync(toDoListId);
 
             if (toDoList is null)
             {
@@ -91,7 +91,7 @@ namespace BLL.Services
 
             try
             {
-                await _toDoListRepository.AddToDoTask(toDoTask, toDoListId);
+                //await _toDoListRepository.AddToDoTask(toDoTask, toDoListId);
                 return new ResultState(true, "Successful");
             }
             catch (Exception ex)
@@ -100,19 +100,19 @@ namespace BLL.Services
             }
         }
 
-        public async Task<List<ToDoTask>> GetToDoListToDoTasks(int toDoListId)
-        {
-            return await _toDoListRepository.GetToDoListToDoTasks(toDoListId);
-        }
+        //public async Task<List<ToDoTask>> GetToDoListToDoTasks(int toDoListId)
+        //{
+        //    return await _toDoListRepository.GetToDoListToDoTasks(toDoListId);
+        //}
 
-        public async Task<ToDoList> GetToDoListByTitle(string title)
-        {
-            return await _toDoListRepository.GetToDoListByTitle(title);
-        }
+        //public async Task<ToDoList> GetToDoListByTitle(string title)
+        //{
+        //    return await _toDoListRepository.GetToDoListByTitle(title);
+        //}
 
-        public async Task<ToDoList> GetToDoListById(int id)
+        public async Task<ToDoList> GetToDoListById(string id)
         {
-            return await _toDoListRepository.GetToDoListById(id);
+            return await _toDoListRepository.GetAsync(id);
         }
     }
 

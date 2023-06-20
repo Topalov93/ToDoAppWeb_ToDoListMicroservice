@@ -6,18 +6,14 @@ namespace DAL.Repositories
 {
     public interface IToDoListRepository
     {
-        public Task CreateToDoList(ToDoList newToDoList);
+        public Task<List<ToDoList>> GetAsync();
 
-        public Task EditToDoList(int toDoListId, ToDoList newToDoList);
+        public Task<ToDoList?> GetAsync(string id);
 
-        public Task DeleteToDoList(int toDoListId);
+        public Task CreateAsync(ToDoList newBook);
 
-        public Task AddToDoTask(ToDoTask toDoTask, int toDoListId);
+        public Task UpdateAsync(string id, ToDoList updatedBook);
 
-        public Task<ToDoList> GetToDoListByTitle(string title);
-
-        public Task<ToDoList> GetToDoListById(int id);
-
-        public Task<List<ToDoTask>> GetToDoListToDoTasks(int toDoListId);
+        public Task RemoveAsync(string id);
     }
 }

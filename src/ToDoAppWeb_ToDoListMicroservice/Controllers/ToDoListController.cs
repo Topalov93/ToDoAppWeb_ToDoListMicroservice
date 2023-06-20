@@ -47,7 +47,7 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
 
         [HttpDelete]
         [Route("{toDoListId}")]
-        public async Task<ActionResult> Delete(int toDoListId)
+        public async Task<ActionResult> Delete(string toDoListId)
         {
             var resultState = await _toDoListService.DeleteToDoList(toDoListId);
 
@@ -64,7 +64,7 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
 
         [HttpPut]
         [Route("{toDoListId}")]
-        public async Task<ActionResult> Edit(int toDoListId, ToDoListRequestDTO newtoDoList)
+        public async Task<ActionResult> Edit(string toDoListId, ToDoListRequestDTO newtoDoList)
         {
             ToDoList toDoListToEdit = new ToDoList
             {
@@ -87,7 +87,7 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
 
         [HttpPost]
         [Route("{toDoListId}")]
-        public async Task<ActionResult> AddToDoTask(int toDoListId, ToDoTaskRequestDTO newtoDoTask)
+        public async Task<ActionResult> AddToDoTask(string toDoListId, ToDoTaskRequestDTO newtoDoTask)
         {
             ToDoTask toDoTaskToAdd = new ToDoTask
             {
@@ -111,7 +111,7 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
 
         [HttpGet]
         [Route("{toDoListId}")]
-        public async Task<ActionResult<ToDoListResponseDTO>> GetToDoListById(int toDoListId)
+        public async Task<ActionResult<ToDoListResponseDTO>> GetToDoListById(string toDoListId)
         {
             var toDoList = await _toDoListService.GetToDoListById(toDoListId);
 
@@ -133,35 +133,35 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
             return toDoListResponse;
         }
 
-        [HttpGet]
-        [Route("{toDoListId}/toDoTasks")]
-        public async Task<ActionResult<List<ToDoTaskResponseDTO>>> GetToDoListToDoTasks(int toDoListId)
-        {
-            var toDoList = await _toDoListService.GetToDoListById(toDoListId);
+        //[HttpGet]
+        //[Route("{toDoListId}/toDoTasks")]
+        //public async Task<ActionResult<List<ToDoTaskResponseDTO>>> GetToDoListToDoTasks(string toDoListId)
+        //{
+        //    var toDoList = await _toDoListService.GetToDoListById(toDoListId);
 
-            if (toDoList is null)
-            {
-                return BadRequest();
-            }
+        //    if (toDoList is null)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var toDoTasks = await _toDoListService.GetToDoListToDoTasks(toDoListId);
+        //    //var toDoTasks = await _toDoListService.GetToDoListToDoTasks(toDoListId);
 
-            List<ToDoTaskResponseDTO> toDoTasksResponse = new List<ToDoTaskResponseDTO>();
+        //    List<ToDoTaskResponseDTO> toDoTasksResponse = new List<ToDoTaskResponseDTO>();
 
-            foreach (var toDoTask in toDoTasks)
-            {
-                var toDoTaskResponse = new ToDoTaskResponseDTO()
-                {
-                    Id = toDoTask.Id,
-                    Title = toDoTask.Title,
-                    IsCompleted = toDoTask.IsCompleted,
-                    ToDoListId = toDoTask.ToDoListId,
-                };
+        //    foreach (var toDoTask in toDoTasks)
+        //    {
+        //        var toDoTaskResponse = new ToDoTaskResponseDTO()
+        //        {
+        //            Id = toDoTask.Id,
+        //            Title = toDoTask.Title,
+        //            IsCompleted = toDoTask.IsCompleted,
+        //            ToDoListId = toDoTask.ToDoListId,
+        //        };
 
-                toDoTasksResponse.Add(toDoTaskResponse);
-            }
+        //        toDoTasksResponse.Add(toDoTaskResponse);
+        //    }
 
-            return toDoTasksResponse;
-        }
+        //    return toDoTasksResponse;
+        //}
     }
 }

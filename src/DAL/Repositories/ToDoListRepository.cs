@@ -1,5 +1,7 @@
 ﻿using DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,62 +12,34 @@ namespace DAL.Repositories
 {
     public class ToDoListRepository : IToDoListRepository
     {
-        private ToDoListDbContext _context;
+        private readonly IMongoCollection<ToDoList> _toDoLists;
 
-        public ToDoListRepository(ToDoListDbContext context)
+        public ToDoListRepository(
+            IOptions<ToDoListServiceDatabaseSettings> taskServiceDatabaseSettings)
         {
-            _context = context;
+            var mongoClient = new MongoClient(
+                taskServiceDatabaseSettings.Value.ConnectionString);
+
+            var mongoDatabase = mongoClient.GetDatabase(
+                taskServiceDatabaseSettings.Value.DatabaseName);
+
+            _toDoLists = mongoDatabase.GetCollection<ToDoList>(
+                taskServiceDatabaseSettings.Value.ToDoListsCollectionName);
         }
 
-        public async Task CreateToDoList(ToDoList newToDoList)
-        {
-            await _context.ToDoLists.Add(newToDoList).ReloadAsync();
-            _context.SaveChanges();
-        }
+        public async Task<List<ToDoList>> GetAsync() =>
+            await _toDoLists.Find(_ => true).ToListAsync();
 
-        public async Task EditToDoList(int toDoListId, ToDoList newToDoList)
-        {
-            ToDoList toDoList = await GetToDoListById(toDoListId);
+        public async Task<ToDoList?> GetAsync(string id) =>
+            await _toDoLists.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-            toDoList.Title = newToDoList.Title;
-            toDoList.Description = newToDoList.Description;
-            toDoList.AddedOn = newToDoList.AddedOn;
-            toDoList.EditedOn = newToDoList.EditedOn;
+        public async Task CreateAsync(ToDoList newBook) =>
+            await _toDoLists.InsertOneAsync(newBook);
 
-            _context.SaveChanges();
-        }
+        public async Task UpdateAsync(string id, ToDoList updatedBook) =>
+            await _toDoLists.ReplaceOneAsync(x => x.Id == id, updatedBook);
 
-        public async Task DeleteToDoList(int toDoListId)
-        {
-            ToDoList toDoList = await GetToDoListById(toDoListId);
-
-            _context.ToDoLists.Remove(toDoList);
-
-            _context.SaveChanges();
-        }
-
-        public async Task AddToDoTask(ToDoTask toDoTask, int toDoListId)
-        {
-            ToDoList toDoList = await GetToDoListById(toDoListId);
-
-            toDoList.ToDoTasks.Add(toDoTask);
-
-            _context.SaveChanges();
-        }
-
-        public async Task<ToDoList> GetToDoListByTitle(string title)
-        {
-            return await _context.ToDoLists.FirstOrDefaultAsync(t => t.Title == title);
-        }
-
-        public async Task<ToDoList> GetToDoListById(int id)
-        {
-            return await _context.ToDoLists.FirstOrDefaultAsync(t => t.Id == id);
-        }
-
-        public async Task<List<ToDoTask>> GetToDoListToDoTasks(int toDoListId)
-        {
-            return await _context.ToDoLists.SelectMany(l => l.ToDoTasks).Where(l => l.Id == toDoListId).ToListAsync();
-        }
+        public async Task RemoveAsync(string id) =>
+            await _toDoLists.DeleteOneAsync(x => x.Id == id);
     }
 }
