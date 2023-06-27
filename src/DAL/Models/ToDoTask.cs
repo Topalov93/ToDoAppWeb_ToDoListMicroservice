@@ -9,7 +9,7 @@ namespace DAL.Models
 {
     public class ToDoTask
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [MaxLength(150)]
@@ -20,6 +20,6 @@ namespace DAL.Models
 
         public int ToDoListId { get; set; }
 
-        public virtual ToDoList ToDoList { get; set; }
+        public virtual ToDoList ToDoList { get; set; } = new ToDoList();
     }
 }

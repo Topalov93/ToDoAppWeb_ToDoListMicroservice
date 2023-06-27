@@ -12,10 +12,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Models.RequestDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToDoAppWeb_ToDoListMicroservice.KafkaConsumer;
 
 namespace ToDoAppWeb_ToDoListMicroservice
 {
@@ -43,6 +45,13 @@ namespace ToDoAppWeb_ToDoListMicroservice
             services.AddTransient<IToDoListRepository, ToDoListRepository>();
 
             services.AddTransient<IToDoListService, ToDoListService>();
+
+            services
+                .AddSingleton<IHostedService, UserEventConsumer>()
+                .AddSingleton<IHostedService, ToDoTaskEventConsumer>();
+                
+
+            //services.AddSingleton<IHostedService, UserEventConsumer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
