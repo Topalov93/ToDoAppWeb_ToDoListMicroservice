@@ -72,8 +72,16 @@ namespace ToDoAppWeb_ToDoListMicroservice.KafkaConsumer
 
         public async void ProceedMessage(string message)
         {
-            var user = JsonConvert.DeserializeObject<User>(message);
             var tasks = new List<ToDoTask>();
+            var user = new User();
+            try
+            {
+                user = JsonConvert.DeserializeObject<User>(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             try
             {
