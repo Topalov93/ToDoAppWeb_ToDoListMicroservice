@@ -3,8 +3,7 @@ using DAL.Models;
 using DAL.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace BLL.Services
@@ -20,12 +19,12 @@ namespace BLL.Services
 
         public async Task<ResultState> CreateToDoList(ToDoList newToDoList)
         {
-            //ToDoList toDoList = await _toDoListRepository.GetToDoListByTitle(newToDoList.Title);
+            ToDoList toDoList = await _toDoListRepository.GetByTitleAsync(newToDoList.Title);
 
-            //if (toDoList is not null)
-            //{
-            //    return new ResultState(false, "ToDoList already exist");
-            //}
+            if (toDoList is not null)
+            {
+                return new ResultState(false, "ToDoList with that name already exist");
+            }
 
             try
             {
@@ -80,7 +79,7 @@ namespace BLL.Services
             }
         }
 
-        public async Task<ResultState> AddToDoTask(ToDoTask toDoTask, string toDoListId)
+        public async Task<ResultState> AddToDoTask(string toDoTaskId, string toDoListId)
         {
             ToDoList toDoList = await _toDoListRepository.GetAsync(toDoListId);
 
@@ -89,9 +88,16 @@ namespace BLL.Services
                 return new ResultState(false, "ToDoList don't exist");
             }
 
+            var tasks = await GetBacklog();
+            if (tasks is null) return new ResultState(false, "Unsuccessful fetching ot tasks backlog");
+
+            var todoTask = tasks.Find(x => x.Id == toDoTaskId);
+            if (todoTask is null) return new ResultState(false, "Unsuccessful task pick");
+
+            toDoList.ToDoTasks.Add(todoTask);
             try
             {
-                //await _toDoListRepository.AddToDoTask(toDoTask, toDoListId);
+                await _toDoListRepository.UpdateAsync(toDoListId, toDoList);
                 return new ResultState(true, "Successful");
             }
             catch (Exception ex)
@@ -105,14 +111,47 @@ namespace BLL.Services
         //    return await _toDoListRepository.GetToDoListToDoTasks(toDoListId);
         //}
 
-        //public async Task<ToDoList> GetToDoListByTitle(string title)
-        //{
-        //    return await _toDoListRepository.GetToDoListByTitle(title);
-        //}
+        public async Task<ToDoList> GetToDoListByTitle(string title)
+        {
+            return await _toDoListRepository.GetByTitleAsync(title);
+        }
 
         public async Task<ToDoList> GetToDoListById(string id)
         {
             return await _toDoListRepository.GetAsync(id);
+        }
+
+        public async Task<List<ToDoList>> GetToDoLists()
+        {
+            return await _toDoListRepository.GetAsync();
+        }
+
+        public async Task<List<ToDoTask>> GetBacklog()
+        {
+            using var client = new HttpClient();
+            List<ToDoTask> backlog = new List<ToDoTask>();
+            HttpResponseMessage response = new HttpResponseMessage();
+
+            try
+            {
+                response = await client.GetAsync("http://localhost:5001/api/ToDoTask/backlog");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                var backlogAsString = await response.Content.ReadAsStringAsync();
+                backlog = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ToDoTask>>(backlogAsString);
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync(response.Content.ToString());
+            }
+
+            return backlog;
         }
     }
 

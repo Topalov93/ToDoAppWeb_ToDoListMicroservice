@@ -86,17 +86,11 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
         }
 
         [HttpPost]
-        [Route("{toDoListId}")]
-        public async Task<ActionResult> AddToDoTask(string toDoListId, ToDoTaskRequestDTO newtoDoTask)
+        [Route("{toDoListId}/{toDoTaskId}")]
+        public async Task<ActionResult> AddToDoTask(string toDoListId, string toDoTaskId)
         {
-            ToDoTask toDoTaskToAdd = new ToDoTask
-            {
-                Title = newtoDoTask.Title,
-                IsCompleted = newtoDoTask.IsCompleted,
-                ToDoListId = newtoDoTask.ToDoListId,
-            };
 
-            var resultState = await _toDoListService.AddToDoTask(toDoTaskToAdd, toDoListId);
+            var resultState = await _toDoListService.AddToDoTask(toDoTaskId, toDoListId);
 
             if (resultState.IsSuccessful)
             {

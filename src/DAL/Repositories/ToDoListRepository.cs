@@ -41,5 +41,8 @@ namespace DAL.Repositories
 
         public async Task RemoveAsync(string id) =>
             await _toDoLists.DeleteOneAsync(x => x.Id == id);
+
+        public async Task<ToDoList?> GetByTitleAsync(string title) =>
+            await _toDoLists.Find(x => x.Title == title).FirstOrDefaultAsync();
     }
 }

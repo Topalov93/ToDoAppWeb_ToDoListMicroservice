@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,22 +11,25 @@ namespace DAL.Models
 {
     public class ToDoList
     {
-        public string Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
 
-        [Required]
-        [MaxLength(150)]
+        [BsonElement("title")]
         public string Title { get; set; }
 
-        [Required]
-        [MaxLength(500)]
+        [BsonElement("description")]
         public string Description { get; set; }
 
+        [BsonElement("userId")]
         public int UserId { get; set; }
 
+        [BsonElement("addedOn")]
         public DateTime AddedOn { get; set; }
 
+        [BsonElement("editedOn")]
         public DateTime EditedOn { get; set; }
 
-        public virtual ICollection <ToDoTask> ToDoTasks { get; set; }
+        [BsonElement("toDoTasks")]
+        public virtual ICollection <ToDoTask> ToDoTasks { get; set; } = new List<ToDoTask>();
     }
 }

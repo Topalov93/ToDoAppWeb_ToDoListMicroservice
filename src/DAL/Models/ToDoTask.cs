@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,17 +10,13 @@ namespace DAL.Models
 {
     public class ToDoTask
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
 
-        [Required]
-        [MaxLength(150)]
+        [JsonProperty("title")]
         public string Title { get; set; }
 
-        [Required]
+        [JsonProperty("isCompleted")]
         public bool IsCompleted { get; set; }
-
-        public int ToDoListId { get; set; }
-
-        public virtual ToDoList ToDoList { get; set; } = new ToDoList();
     }
 }

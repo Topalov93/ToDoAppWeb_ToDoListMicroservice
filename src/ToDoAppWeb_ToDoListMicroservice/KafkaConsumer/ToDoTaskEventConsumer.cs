@@ -9,6 +9,7 @@ using System.Threading;
 using System;
 using BLL.Services;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace ToDoAppWeb_ToDoListMicroservice.KafkaConsumer
 {
@@ -72,28 +73,26 @@ namespace ToDoAppWeb_ToDoListMicroservice.KafkaConsumer
 
         public async void ProceedMessage(string message)
         {
-            var user = JsonConvert.DeserializeObject<ToDoTask>(message);
-            var tasks = new List<ToDoTask>();
+            var toDoTask = JsonConvert.DeserializeObject<ToDoTask>(message);
+            var lists = await _toDoListService.GetToDoLists();
 
-            try
+            foreach (var list in lists)
             {
-                //tasks = await _toDoListService.GetTasksByUserId(user.Id);
+                var tasks = list.ToDoTasks.ToList();
 
+                foreach (var task in tasks)
+                {
+                    if (task.Id == toDoTask.Id)
+                    {
+                        task.Title = toDoTask.Title;
+                        task.IsCompleted = toDoTask.IsCompleted;
+                    }
+                }
             }
-            catch (Exception)
-            {
 
-                throw;
-            }
-
-            try
+            foreach (var list in lists)
             {
-                //await _toDoListService.UpdateUserInfo(tasks, user);
-            }
-            catch (Exception)
-            {
-
-                throw;
+                await _toDoListService.EditToDoList(list.Id, list);
             }
         }
     }
