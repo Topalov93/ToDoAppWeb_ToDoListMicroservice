@@ -104,6 +104,36 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult<List<ToDoListResponseDTO>>> GetToDoLists()
+        {
+            var toDoList = await _toDoListService.GetToDoLists();
+
+            if (toDoList is null)
+            {
+                return BadRequest();
+            }
+
+            var toDoListResponse = new List<ToDoListResponseDTO>();
+
+            foreach (var list in toDoList)
+            {
+                var toDoListDTO = new ToDoListResponseDTO()
+                {
+                    Id = list.Id,
+                    Title = list.Title,
+                    Description = list.Description,
+                    AddedOn = list.AddedOn,
+                    UserId = list.UserId,
+                    EditedOn = list.EditedOn
+                };
+
+                toDoListResponse.Add(toDoListDTO);
+            }
+
+            return toDoListResponse;
+        }
+
+        [HttpGet]
         [Route("{toDoListId}")]
         public async Task<ActionResult<ToDoListResponseDTO>> GetToDoListById(string toDoListId)
         {
@@ -126,6 +156,8 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
 
             return toDoListResponse;
         }
+
+
 
         //[HttpGet]
         //[Route("{toDoListId}/toDoTasks")]
