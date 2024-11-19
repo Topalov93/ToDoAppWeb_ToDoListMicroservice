@@ -90,7 +90,7 @@ namespace ToDoAppWeb_ToDoListMicroservice.Controllers
         public async Task<ActionResult> AddToDoTask(string toDoListId, string toDoTaskId)
         {
 
-            var resultState = await _toDoListService.AddToDoTask(toDoTaskId, toDoListId);
+            var resultState = await _toDoListService.AddToDoTask(toDoTaskId);
 
             if (resultState.IsSuccessful)
             {

@@ -16,16 +16,14 @@ namespace BLL.Services
         public Task<ResultState> DeleteToDoList(string toDoListId);
 
 
-        public Task<ResultState> AddToDoTask(string toDoTaskId, string toDoListId);
-
-
-        //public Task<List<ToDoTask>> GetToDoListToDoTasks(string toDoListId);
+        public Task<ResultState> AddToDoTask(string toDoListId);
 
 
         public Task<ToDoList> GetToDoListByTitle(string title);
 
 
         public Task<ToDoList> GetToDoListById(string id);
+
 
         public Task<List<ToDoList>> GetToDoLists();
 

@@ -15,7 +15,7 @@ namespace ToDoAppWeb_ToDoListMicroservice.KafkaConsumer
 {
     public class ToDoTaskEventConsumer : BackgroundService
     {
-        const string topic = "TodoTasks";
+        const string topic = "todoTasks";
         public IToDoListService _toDoListService;
 
         public ToDoTaskEventConsumer(IToDoListService listService) : base()

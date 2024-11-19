@@ -3,6 +3,7 @@ using DAL.Models;
 using DAL.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -79,7 +80,7 @@ namespace BLL.Services
             }
         }
 
-        public async Task<ResultState> AddToDoTask(string toDoTaskId, string toDoListId)
+        public async Task<ResultState> AddToDoTask(string toDoListId)
         {
             ToDoList toDoList = await _toDoListRepository.GetAsync(toDoListId);
 
@@ -88,11 +89,11 @@ namespace BLL.Services
                 return new ResultState(false, "ToDoList don't exist");
             }
 
-            var tasks = await GetBacklog();
+            var tasks = await GetTasksBacklog();
             if (tasks is null) return new ResultState(false, "Unsuccessful fetching ot tasks backlog");
 
-            var todoTask = tasks.Find(x => x.Id == toDoTaskId);
-            if (todoTask is null) return new ResultState(false, "Unsuccessful task pick");
+            //Pick task form the backlog
+            var todoTask = tasks.First();
 
             toDoList.ToDoTasks.Add(todoTask);
             try
@@ -105,11 +106,6 @@ namespace BLL.Services
                 return new ResultState(false, "Unable to add task to ToDoList", ex);
             }
         }
-
-        //public async Task<List<ToDoTask>> GetToDoListToDoTasks(int toDoListId)
-        //{
-        //    return await _toDoListRepository.GetToDoListToDoTasks(toDoListId);
-        //}
 
         public async Task<ToDoList> GetToDoListByTitle(string title)
         {
@@ -126,7 +122,35 @@ namespace BLL.Services
             return await _toDoListRepository.GetAsync();
         }
 
-        public async Task<List<ToDoTask>> GetBacklog()
+        public async Task<List<ToDoTask>> GetTasksBacklog()
+        {
+            using var client = new HttpClient();
+            List<ToDoTask> backlog = new List<ToDoTask>();
+            HttpResponseMessage response = new HttpResponseMessage();
+
+            try
+            {
+                response = await client.GetAsync("http://localhost:5001/api/ToDoTask/backlog");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                var backlogAsString = await response.Content.ReadAsStringAsync();
+                backlog = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ToDoTask>>(backlogAsString);
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync(response.Content.ToString());
+            }
+
+            return backlog;
+        }
+
+        public async Task<List<ToDoTask>> GetUsersList()
         {
             using var client = new HttpClient();
             List<ToDoTask> backlog = new List<ToDoTask>();
